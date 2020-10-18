@@ -79,7 +79,7 @@ function RayCanvas(glcanvas, glslcanvas) {
         gl.uniform1i(shader.u_orthographic, orthographic);
         let camera = glcanvas.glslcanvas.camera;
         if (!(camera === null)) {
-            gl.uniform3fv(shader.u_eye, camera.pos);
+            gl.uniform3fv(shader.u_cameraPos, camera.pos);
             gl.uniform3fv(shader.u_right, camera.right);
             gl.uniform3fv(shader.u_up, camera.up);
             gl.uniform1f(shader.u_fovx, camera.fovx);
@@ -201,15 +201,12 @@ function RayCanvas(glcanvas, glslcanvas) {
         gl.vertexAttribPointer(shader.positionLocation, 2, gl.FLOAT, false, 0, 0);
 
         // Setup uniforms
-        shader.u_canvas_width = gl.getUniformLocation(shader, "canvas_width");
-        shader.u_canvas_height = gl.getUniformLocation(shader, "canvas_height");
-        shader.u_numObjects = gl.getUniformLocation(shader, "numObjects");
         shader.u_numLights = gl.getUniformLocation(shader, "numLights");
         shader.u_numMaterials = gl.getUniformLocation(shader, "numMaterials");
         shader.u_showLights = gl.getUniformLocation(shader, "showLights");
         shader.u_beaconRadius = gl.getUniformLocation(shader, "beaconRadius");
         shader.u_orthographic = gl.getUniformLocation(shader, "orthographic");
-        shader.u_eye = gl.getUniformLocation(shader, "eye");
+        shader.u_cameraPos = gl.getUniformLocation(shader, "cameraPos");
         shader.u_right = gl.getUniformLocation(shader, "right");
         shader.u_up = gl.getUniformLocation(shader, "up");
         shader.u_fovx = gl.getUniformLocation(shader, "fovx");

@@ -46,7 +46,6 @@ struct Intersection {
 ********************************************/
 // Uniforms set from Javascript that are constant
 // over all fragments
-uniform int numObjects;
 uniform int numLights;
 uniform Light lights[MAX_LIGHTS];
 uniform int numMaterials;
@@ -58,7 +57,7 @@ uniform float beaconRadius;
 uniform int orthographic;
 
 // Camera parameters
-uniform vec3 eye;
+uniform vec3 cameraPos;
 uniform vec3 right;
 uniform vec3 up;
 uniform float fovx;
@@ -287,6 +286,9 @@ Material getMaterial(int mIdx) {
         if (i == mIdx) {
             m = materials[i];
         }
+        if (i >= numMaterials) {
+            break;
+        }
     }
     return m;
 }
@@ -307,7 +309,7 @@ bool pointInShadow(Intersection intersect, Light l) {
 /**
 * Get the phong illumination color
 */
-vec3 getPhongColor(Intersection intersect, Material m) {
+vec3 getPhongColor(Intersection intersect, Material m, vec3 eye) {
     vec3 color = vec3(0.0, 0.0, 0.0);
     // To help with debugging, color the fragment based on the
     // normal of the intersection.  But this should eventually
@@ -325,7 +327,7 @@ vec3 getPhongColor(Intersection intersect, Material m) {
 varying vec2 v_position;
 Ray getRay() {
     Ray ray;
-    ray.p0 = eye;
+    ray.p0 = cameraPos;
     // TODO: Finish constructing ray by figuring out direction, using
     // v_position.x, v_position.y, fovx, fovy, up, and right
     if (orthographic == 1) {
@@ -390,7 +392,7 @@ void main() {
             else {
                 insideObj = false;
             }
-            color += weight*getPhongColor(intersect, m);
+            color += weight*getPhongColor(intersect, m, rayInitial.p0);
             // TODO: Reflect ray, multiply weight by specular of this object,
             // and recursively continue
             // If doing extra task on transmission, only reflect if the
