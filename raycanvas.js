@@ -114,6 +114,7 @@ function RayCanvas(glcanvas, glslcanvas) {
                     gl.uniform3fv(shader.u_materials[i].kd, scene.materialsArr[i].kd);
                     gl.uniform3fv(shader.u_materials[i].ks, scene.materialsArr[i].ks);
                     gl.uniform3fv(shader.u_materials[i].ka, scene.materialsArr[i].ka);
+                    gl.uniform3fv(shader.u_materials[i].kt, scene.materialsArr[i].kt);
                     gl.uniform1f(shader.u_materials[i].shininess, scene.materialsArr[i].shininess);
                     gl.uniform1f(shader.u_materials[i].refraction, scene.materialsArr[i].refraction);
                     let special = 0;
